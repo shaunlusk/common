@@ -25,6 +25,7 @@ SL.CanvasContextWrapper.prototype.setImageSmoothingEnabled = function(imageSmoot
 SL.CanvasContextWrapper.prototype.clearRect = function(x, y, width, height) {
   if (this.isOutOfView(x, y, width, height))  return;
   this._canvasContext.clearRect(x + this._viewOriginX, y + this._viewOriginY, width, height);
+  console.log("[internal clear] " + (x + this._viewOriginX) + "," + (y + this._viewOriginY) + " : " + (x + this._viewOriginX + width) + "," + (y + this._viewOriginY + height));
 };
 
 SL.CanvasContextWrapper.prototype.clear = function() {
@@ -39,10 +40,31 @@ SL.CanvasContextWrapper.prototype.fillRect = function(x, y, width, height) {
 SL.CanvasContextWrapper.prototype.drawImage = function(image, sx, sy, sWidth, sHeight, x, y, width, height) {
   if (this.isOutOfView(x, y, width, height))  return;
   this._canvasContext.drawImage(image, sx, sy, sWidth, sHeight, x + this._viewOriginX, y + this._viewOriginY, width, height);
+
+  if (SL.debug) {
+    this._canvasContext.beginPath();
+    this._canvasContext.strokeStyle="white";
+    this._canvasContext.lineWidth="0.5";
+    this._canvasContext.rect(x + this._viewOriginX + 1, y + this._viewOriginY + 1, width - 2, height - 2);
+    this._canvasContext.stroke();
+    this._canvasContext.closePath();
+    console.log("[internal draw image] " + (x + this._viewOriginX) + "," + (y + this._viewOriginY) + " : " + (x + this._viewOriginX + width) + "," + (y + this._viewOriginY + height));
+  }
+
 };
 
 SL.CanvasContextWrapper.prototype.drawImageWithTranslation = function(image, sx, sy, sWidth, sHeight, x, y, width, height) {
   this._canvasContext.drawImage(image, sx, sy, sWidth, sHeight, x, y, width, height);
+
+  if (SL.debug) {
+    this._canvasContext.beginPath();
+    this._canvasContext.strokeStyle="white";
+    this._canvasContext.lineWidth="0.5";
+    this._canvasContext.rect(x + 1, y + 1, width - 2, height - 2);
+    this._canvasContext.stroke();
+    this._canvasContext.closePath();
+    console.log("[internal draw translated image] " + (x) + "," + (y) + " : " + (x + width) + "," + (y + height));
+  }
 };
 
 SL.CanvasContextWrapper.prototype.save = function() {

@@ -428,8 +428,8 @@ SL.GfxElement.prototype._recalculateDiagonalSize = function() {
 
 SL.GfxElement.prototype._recalculateRotatedCollisionBox = function() {
   if (this.getRotation() === null) return;
-  this._rotatedX = Math.floor(this.getX() - (this.getDiagonalSize() - this.getWidth()) / 2);
-  this._rotatedY = Math.floor(this.getY() - (this.getDiagonalSize() - this.getHeight()) / 2);
+  this._rotatedX = Math.floor(this.getX() - (this.getScaledDiagonalSize() - this.getScaledWidth()) / 2);
+  this._rotatedY = Math.floor(this.getY() - (this.getScaledDiagonalSize() - this.getScaledHeight()) / 2);
 };
 
 SL.GfxElement.prototype.isHorizontallyFlipped = function() {return this._horizontalFlip;};
@@ -745,12 +745,14 @@ SL.GfxElement.prototype._updateMoveOrder = function(time,diff) {
 */
 SL.GfxElement.prototype.clear = function(time, diff) {
   if (this.wasRotated()) {
+    console.log("cleared (rotated): " + (this.getRotatedLastX() * this.getScreenScaleX() - 1) + "," + (this.getRotatedLastY() * this.getScreenScaleY() - 1) + " : " + (this.getRotatedLastX() * this.getScreenScaleX() - 1 + this.getLastDiagonalSize() * this.getTotalScaleX() + 2) + "," + (this.getRotatedLastY() * this.getScreenScaleY() - 1 + this.getLastDiagonalSize() * this.getTotalScaleY() + 2));
     this.getCanvasContext().clearRect(
       this.getRotatedLastX() * this.getScreenScaleX() - 1,
       this.getRotatedLastY() * this.getScreenScaleY() - 1,
       this.getLastDiagonalSize() * this.getTotalScaleX() + 2,
       this.getLastDiagonalSize() * this.getTotalScaleY() + 2 );
   } else {
+    console.log("cleared: " + (this.getLastX() * this.getScreenScaleX() - 1) + "," + (this.getLastY() * this.getScreenScaleY() - 1) + " : " + (this.getLastX() * this.getScreenScaleX() - 1 + this.getLastWidth() * this.getTotalScaleX() + 2) + "," + (this.getLastY() * this.getScreenScaleY() - 1 + this.getLastHeight() * this.getTotalScaleY() + 2));
     this.getCanvasContext().clearRect(
       this.getLastX() * this.getScreenScaleX() - 1,
       this.getLastY() * this.getScreenScaleY() - 1,
