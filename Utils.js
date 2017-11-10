@@ -1,4 +1,5 @@
 var SL = SL || {};
+var global = global || {};
 
 SL.Utils = {};
 
@@ -71,3 +72,13 @@ SL.mergeProperties = function(properties, object) {
     object[key] = properties[key];
   });
 };
+
+if( typeof exports !== 'undefined' ) {
+  if( typeof module !== 'undefined' && module.exports ) {
+    exports = module.exports = SL;
+  }
+  exports.SL = SL;
+}
+else {
+  global.SL = SL;
+}

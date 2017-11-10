@@ -1,4 +1,5 @@
 var SL = SL || {};
+var global = global || {};
 
 /** Simple Queue class
 * @constructor
@@ -111,3 +112,14 @@ SL.QueueIterator.prototype.getCurrent = function() {
 SL.QueueIterator.prototype.next = function() {
   this._ptr = this._ptr === null ? null : this._ptr.next;
 };
+
+
+if( typeof exports !== 'undefined' ) {
+  if( typeof module !== 'undefined' && module.exports ) {
+    exports = module.exports = SL;
+  }
+  exports.SL = SL;
+}
+else {
+  global.SL = SL;
+}
